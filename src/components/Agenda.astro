@@ -1,0 +1,188 @@
+---
+---
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+
+<section id="agenda" class="py-20 bg-slate-50 relative overflow-hidden">
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-12" data-aos="fade-down">
+            <h2 class="text-4xl font-bold text-blue-900">Agenda tu Visita VIP 📅</h2>
+            <p class="text-gray-600 mt-2">Selecciona el día y la hora exacta para recibirte como mereces.</p>
+        </div>
+
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row border border-gray-100" data-aos="fade-up">
+            
+            <div class="lg:w-1/2 p-8 border-r border-gray-100">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
+                    Selecciona Fecha y Hora
+                </h3>
+                <div class="mb-8">
+                    <input type="text" id="datepicker" class="w-full bg-slate-50 border border-gray-300 rounded-lg p-4 text-center font-bold text-gray-700 focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer" placeholder="Clic para abrir calendario">
+                </div>
+                <div id="time-slots-container" class="opacity-50 pointer-events-none transition-opacity duration-300">
+                    <label class="block text-sm font-bold text-gray-500 mb-4 uppercase">Horarios Disponibles</label>
+                    <div class="grid grid-cols-3 gap-3" id="slots-grid"></div>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 p-8 bg-blue-50/30 relative">
+                <div id="form-overlay" class="absolute inset-0 bg-white/80 z-20 flex items-center justify-center backdrop-blur-sm">
+                    <div class="text-center p-6">
+                        <p class="font-bold text-gray-500">👈 Primero selecciona un horario</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <span class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+                    Tus Datos
+                </h3>
+
+                <form class="space-y-4">
+                    <input type="hidden" id="selected-time" name="hora">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nombre Completo</label>
+                        <input type="text" name="nombre" class="w-full p-3 rounded-lg border border-gray-300 outline-none" placeholder="Ej. Juan Pérez" required>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Teléfono</label>
+                            <input type="tel" name="telefono" class="w-full p-3 rounded-lg border border-gray-300 outline-none" placeholder="55 1234 5678" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Modelo</label>
+                            <select name="modelo" class="w-full p-3 rounded-lg border border-gray-300 outline-none bg-white">
+                                <option>Ciprés</option>
+                                <option>Olivo</option>
+                                <option>Departamento</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tipo de Crédito</label>
+                        <select name="credito" class="w-full p-3 rounded-lg border border-gray-300 outline-none bg-white">
+                            <option>Infonavit</option>
+                            <option>Fovissste</option>
+                            <option>Bancario</option>
+                            <option>Contado</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition shadow-lg mt-4">
+                        Confirmar Cita Real
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script is:inline src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+
+<script is:inline>
+    // 1. Configuración del Calendario (Visual)
+    const dateInput = document.getElementById('datepicker');
+    const timeContainer = document.getElementById('time-slots-container');
+    const slotsGrid = document.getElementById('slots-grid');
+    const formOverlay = document.getElementById('form-overlay');
+    const hiddenTime = document.getElementById('selected-time');
+
+    const baseHours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+
+    flatpickr("#datepicker", {
+        locale: "es",
+        minDate: "today",
+        dateFormat: "d F Y",
+        onChange: function(selectedDates, dateStr, instance) {
+            activateTimeSlots(dateStr);
+        }
+    });
+
+    function activateTimeSlots(dateStr) {
+        timeContainer.classList.remove('opacity-50', 'pointer-events-none');
+        slotsGrid.innerHTML = '';
+
+        baseHours.forEach(time => {
+            const btn = document.createElement('button');
+            btn.className = 'py-2 px-3 rounded border text-sm font-medium transition duration-200 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600';
+            btn.innerText = time;
+            
+            // Simulación visual de ocupado (30% prob)
+            if (Math.random() < 0.3) {
+                btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-gray-100 text-gray-400 cursor-not-allowed';
+                btn.disabled = true;
+                btn.innerText += " (Ocupado)";
+            } else {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('#slots-grid button').forEach(b => {
+                        if(!b.disabled) b.className = 'py-2 px-3 rounded border text-sm font-medium bg-white text-gray-700';
+                    });
+                    btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-blue-600 text-white border-blue-600';
+                    formOverlay.classList.add('hidden');
+                    hiddenTime.value = time;
+                });
+            }
+            slotsGrid.appendChild(btn);
+        });
+    }
+
+    // 2. LÓGICA DE ENVÍO AL PHP (BACKEND)
+    const form = document.querySelector('form');
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = form.querySelector('button');
+        const originalText = btn.innerText;
+        btn.innerText = "⏳ Guardando en servidor...";
+        btn.disabled = true;
+
+        // Obtener fecha real del calendario
+        const fp = document.querySelector("#datepicker")._flatpickr;
+        if (!fp.selectedDates[0]) { alert("Selecciona una fecha"); btn.disabled=false; return; }
+        
+        // Formato MySQL (YYYY-MM-DD)
+        const fechaMySQL = fp.selectedDates[0].toISOString().split('T')[0];
+
+        // Datos a enviar
+        const datos = {
+            nombre: form.querySelector('[name="nombre"]').value,
+            telefono: form.querySelector('[name="telefono"]').value,
+            modeloInteres: form.querySelector('[name="modelo"]').value,
+            tipoCredito: form.querySelector('[name="credito"]').value,
+            hora: hiddenTime.value,
+            fecha: fechaMySQL
+        };
+
+        try {
+            // ENVIAR AL PHP
+            const peticion = await fetch('/guardar_cita.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(datos)
+            });
+
+            const respuesta = await peticion.json();
+
+            if (respuesta.status === 'success') {
+                window.location.href = '/exito';
+            } else {
+                alert("Error al guardar: " + (respuesta.message || "Desconocido"));
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            console.error(error);
+            // NOTA: Si estás en localhost sin PHP, esto fallará. 
+            // En tu hosting Plesk funcionará.
+            alert("⚠️ Error de conexión. (Si estás probando en local sin PHP, esto es normal).");
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>

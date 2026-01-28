@@ -1,0 +1,42 @@
+---
+import '../styles/global.css'; // Mantenemos tu corrección de estilos
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Venta de casas y departamentos en Los Héroes Chalco con Grupo Sadasi." />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	</head>
+	<body class="bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
+		<slot />
+
+        <script is:inline src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script is:inline>
+            // Iniciamos la animación
+            AOS.init({
+                duration: 1000, // Duración de 1 segundo
+                once: true,     // Que se anime solo la primera vez que bajas
+                offset: 100,    // Que empiece un poco antes de llegar al elemento
+            });
+        </script>
+	</body>
+</html>
+
+<style is:global>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>

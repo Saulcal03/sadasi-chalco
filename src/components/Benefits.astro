@@ -1,0 +1,54 @@
+---
+const features = [
+  {
+    icon: "🏠",
+    title: "Espacios Amplios",
+    description: "Casas diseñadas para la comodidad de tu familia con opción a crecimiento."
+  },
+  {
+    icon: "🏫",
+    title: "Escuelas y Parques",
+    description: "Desarrollos equipados con zonas escolares y áreas verdes para tus hijos."
+  },
+  {
+    icon: "📝",
+    title: "Todos los Créditos",
+    description: "Aceptamos y tramitamos Infonavit, Fovissste y Bancarios sin costo extra."
+  },
+  {
+    icon: "🤝",
+    title: "Trámite Gratuito",
+    description: "Asesoría personalizada con Karen Martínez durante todo el proceso."
+  }
+];
+---
+
+<section id="beneficios" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-down">
+            <h2 class="text-3xl font-bold text-blue-900 mb-4">¿Por qué elegir Sadasi Chalco?</h2>
+            <p class="text-gray-600">
+                Más que una casa, te ofrecemos una comunidad integral para el futuro de tu familia.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((item, index) => (
+                /* Aquí aplicamos un retraso basado en el índice (0, 100, 200, 300ms) */
+                <div 
+                    data-aos="fade-up" 
+                    data-aos-delay={index * 100}
+                    class="bg-slate-50 p-6 rounded-xl border border-slate-100 hover:shadow-xl transition text-center group"
+                >
+                    <div class="text-4xl mb-4 bg-blue-100 w-16 h-16 flex items-center justify-center rounded-full mx-auto group-hover:bg-blue-600 group-hover:text-white transition transform group-hover:scale-110 duration-300">
+                        {item.icon}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{item.title}</h3>
+                    <p class="text-gray-600 text-sm">
+                        {item.description}
+                    </p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
