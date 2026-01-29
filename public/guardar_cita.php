@@ -1,17 +1,26 @@
 <?php
 // public/guardar_cita.php
 
-// 1. CONFIGURACIÓN DE BASE DE DATOS (PLESK)
+// 1. CARGAR PHPMAILER (La librería que descargaste)
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require 'mail/Exception.php';
+require 'mail/PHPMailer.php';
+require 'mail/SMTP.php';
+
+// 2. DATOS DE CONEXIÓN
 $host = "localhost";
-$dbname = "citas_sadasi";      
-$username = "admin_citas";     
-$password = "Sadasi123";   
+$dbname = "citas_sadasi";
+$username = "admin_citas"; 
+$password_bd = "Sadasi123"; // Tu contraseña de BD
 
-// 2. CONFIGURACIÓN DEL CORREO (A QUIÉN LE LLEGA)
-$correo_destino = "saulcalderon@ollintem.com.mx"; // <--- CAMBIA ESTO POR EL CORREO REAL DE KAREN O EL TUYO
-$asunto_correo = "🔔 Nueva Cita Agendada - Web Sadasi";
+// DATOS DE TU CORREO (SMTP)
+$smtp_host = 'mail.ollintem.com.mx'; // Generalmente es mail.tudominio.com
+$smtp_user = 'karenprueba@ollintem.com.mx';
+$smtp_pass = '034*qwgY6'; // <--- PON LA CONTRASEÑA QUE LE PUSISTE AL CORREO EN PLESK
+$smtp_port = 587; // Puerto estándar
 
-// Permisos para Astro
+// Headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
@@ -21,15 +30,25 @@ $data = json_decode($json);
 
 if (isset($data->nombre) && isset($data->fecha)) {
     try {
-        // A) GUARDAR EN BASE DE DATOS (Lo que ya teníamos)
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        // --- PASO A: GUARDAR EN BD ---
+        $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password_bd);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "INSERT INTO citas (nombre, telefono, tipo_credito, modelo_interes, fecha, hora) 
-                VALUES (:nombre, :telefono, :tipo, :modelo, :fecha, :hora)";
+        // Verificar si ya está ocupado antes de guardar (Doble seguridad)
+        $check = $conn->prepare("SELECT id FROM citas WHERE fecha = :f AND hora = :h");
+        $check->execute([':f' => $data->fecha, ':h' => $data->hora]);
+        
+        if($check->rowCount() > 0) {
+            echo json_encode(["status" => "error", "message" => "Ese horario acaba de ser ganado por otra persona."]);
+            exit;
+        }
+
+        $sql = "INSERT INTO citas (nombre, correo, telefono, tipo_credito, modelo_interes, fecha, hora) 
+                VALUES (:nombre, :correo, :telefono, :tipo, :modelo, :fecha, :hora)";
         
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $data->nombre);
+        $stmt->bindParam(':correo', $data->correo); // <--- AHORA RECIBIMOS EL CORREO DEL CLIENTE
         $stmt->bindParam(':telefono', $data->telefono);
         $stmt->bindParam(':tipo', $data->tipoCredito);
         $stmt->bindParam(':modelo', $data->modeloInteres);
@@ -38,34 +57,47 @@ if (isset($data->nombre) && isset($data->fecha)) {
 
         if($stmt->execute()) {
             
-            // B) PREPARAR EL CORREO
-            $mensaje = "
-            Hola, tienes una nueva cita registrada:
-            
-            👤 Cliente: " . $data->nombre . "
-            📞 Teléfono: " . $data->telefono . "
-            📅 Fecha: " . $data->fecha . "
-            ⏰ Hora: " . $data->hora . "
-            🏠 Interés: " . $data->modeloInteres . "
-            💳 Crédito: " . $data->tipoCredito . "
-            ";
+            // --- PASO B: ENVIAR CORREOS CON SMTP ---
+            $mail = new PHPMailer(true);
 
-            // --- CORRECCIÓN IMPORTANTE AQUÍ ---
-            // Usamos un correo que SÍ pertenezca a tu dominio real
-            $domain_email = "no-reply@ollintem.com.mx"; 
-            
-            $headers = "From: Web Citas <" . $domain_email . ">" . "\r\n" .
-                       "Reply-To: " . $domain_email . "\r\n" .
-                       "X-Mailer: PHP/" . phpversion();
+            try {
+                // Configuración del Servidor
+                $mail->isSMTP();
+                $mail->Host       = $smtp_host;
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $smtp_user;
+                $mail->Password   = $smtp_pass;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+                $mail->Port       = $smtp_port;
+                $mail->CharSet    = 'UTF-8';
 
-            // Intentar enviar y guardar el resultado en una variable
-            $enviado = mail($correo_destino, $asunto_correo, $mensaje, $headers);
+                // 1. CORREO PARA EL ADMIN (TÚ)
+                $mail->setFrom($smtp_user, 'Sistema Citas Sadasi');
+                $mail->addAddress('crchatgp@gmail.com'); // TU CORREO PERSONAL
+                
+                $mail->isHTML(true);
+                $mail->Subject = '🔔 Nueva Cita Agendada';
+                $mail->Body    = "<h1>Nueva Reserva</h1>
+                                  <p><strong>Cliente:</strong> {$data->nombre}</p>
+                                  <p><strong>Fecha:</strong> {$data->fecha} a las {$data->hora}</p>
+                                  <p><strong>Teléfono:</strong> {$data->telefono}</p>";
+                $mail->send();
 
-            if ($enviado) {
-                echo json_encode(["status" => "success", "message" => "Guardado y Correo ENVIADO"]);
-            } else {
-                // Si entra aquí, es que Plesk bloqueó la salida
-                echo json_encode(["status" => "success", "message" => "Guardado, pero FALLÓ el envío de correo (Revisar logs de Plesk)"]);
+                // 2. CORREO PARA EL CLIENTE
+                $mail->clearAddresses(); // Borrar destinatario anterior
+                $mail->addAddress($data->correo); // Correo del cliente
+                
+                $mail->Subject = '✅ Confirmación de Cita - Sadasi Chalco';
+                $mail->Body    = "<h1>¡Hola {$data->nombre}!</h1>
+                                  <p>Tu cita ha sido confirmada correctamente.</p>
+                                  <p>Te esperamos el día <strong>{$data->fecha}</strong> a las <strong>{$data->hora}</strong>.</p>
+                                  <p>Atte: Karen Martínez.</p>";
+                $mail->send();
+
+                echo json_encode(["status" => "success", "message" => "Guardado y correos enviados"]);
+
+            } catch (Exception $e) {
+                echo json_encode(["status" => "success", "message" => "Guardado, pero error de correo: {$mail->ErrorInfo}"]);
             }
 
         } else {
@@ -75,7 +107,5 @@ if (isset($data->nombre) && isset($data->fecha)) {
     } catch(PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Error BD: " . $e->getMessage()]);
     }
-} else {
-    echo json_encode(["status" => "error", "message" => "Datos vacíos"]);
 }
 ?>

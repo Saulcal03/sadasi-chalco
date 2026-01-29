@@ -1,0 +1,363 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Dashboard VIP | Sadasi Chalco">
+    <div class="min-h-screen bg-slate-50 font-sans text-gray-800">
+        
+        <div id="login-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4">
+            <div class="bg-white max-w-sm w-full p-8 rounded-2xl shadow-2xl text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🔐</div>
+                <h1 class="text-xl font-bold text-blue-900 mb-2">Acceso Administrativo</h1>
+                <form id="login-form" class="space-y-4 mt-6">
+                    <input type="password" id="admin-pass" class="w-full p-3 border border-gray-200 rounded-xl text-center tracking-widest text-lg outline-none focus:border-blue-500 transition" placeholder="Clave Maestra" required>
+                    <button type="submit" class="w-full bg-blue-900 text-white font-bold py-3 rounded-xl hover:bg-blue-800 transition shadow-lg">Entrar</button>
+                </form>
+                <p id="error-msg" class="text-red-500 mt-4 text-xs hidden">⛔ Clave incorrecta</p>
+            </div>
+        </div>
+
+        <div id="dashboard-ui" class="hidden flex h-screen flex-col md:flex-row overflow-hidden">
+            
+            <aside class="hidden md:flex w-80 bg-white border-r border-gray-200 flex-col z-20 shadow-lg shrink-0">
+                <div class="p-6 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2">🏢 Sadasi Admin</h2>
+                    <p class="text-xs text-gray-400 mt-1">Bienvenida, Karen Martínez</p>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Próximos Eventos</h3>
+                    <div id="lista-lateral" class="space-y-3"></div>
+                </div>
+                <div class="p-4 border-t border-gray-100 bg-gray-50">
+                    <button onclick="logout()" class="w-full text-red-600 font-bold text-sm hover:bg-red-50 p-3 rounded-lg transition flex items-center justify-center gap-2">
+                        <span>🚪</span> Cerrar Sesión
+                    </button>
+                </div>
+            </aside>
+
+            <main class="flex-1 flex flex-col bg-slate-50 h-full overflow-hidden">
+                
+                <header class="bg-white p-4 flex justify-between items-center shadow-sm z-10 shrink-0">
+                    <div class="md:hidden">
+                        <h2 class="text-lg font-bold text-blue-900">Panel Citas</h2>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 mx-auto md:mx-0">
+                        <button id="prev-month" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full text-gray-600 transition">◀</button>
+                        <h1 class="text-lg md:text-xl font-bold text-gray-800 capitalize w-32 text-center" id="current-month-display">...</h1>
+                        <button id="next-month" class="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full text-gray-600 transition">▶</button>
+                    </div>
+
+                    <button onclick="logout()" class="md:hidden text-red-500 text-xs font-bold border border-red-100 px-3 py-1 rounded">Salir</button>
+                    <button id="today-btn" class="hidden md:block px-4 py-2 hover:bg-gray-100 rounded-lg text-sm font-bold text-blue-600">Hoy</button>
+                </header>
+
+                <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 flex flex-col">
+                    
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden shrink-0 md:flex-1 md:flex md:flex-col">
+                        <div class="grid grid-cols-7 border-b border-gray-100 bg-gray-50 shrink-0">
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Dom</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Lun</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Mar</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Mié</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Jue</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Vie</div>
+                            <div class="py-2 text-center text-gray-400 font-bold text-[10px] uppercase">Sáb</div>
+                        </div>
+                        
+                        <div id="calendar-grid" class="grid grid-cols-7 text-sm md:flex-1 md:overflow-y-auto">
+                            </div>
+                    </div>
+
+                    <div id="agenda-dia-container" class="md:hidden animate-fade-in-up pb-20">
+                        <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            <span class="w-1 h-6 bg-blue-600 rounded-full"></span>
+                            Agenda: <span id="label-dia-seleccionado" class="text-blue-600">Hoy</span>
+                        </h3>
+                        
+                        <div id="lista-citas-dia" class="space-y-3">
+                            </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+        <div id="modal-detalle" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden animate-scale-in">
+                
+                <div class="bg-slate-50 p-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold text-gray-800">Detalle de la Cita</h3>
+                    <button id="close-modal" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+                </div>
+
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                        <span id="modal-inicial">C</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-1" id="modal-nombre">Nombre Cliente</h2>
+                    <p class="text-sm text-gray-500 mb-6" id="modal-fecha-hora">Fecha • Hora</p>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6 text-left">
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Interés</p>
+                            <p class="font-bold text-blue-900 text-sm truncate" id="modal-modelo">...</p>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                            <p class="text-[10px] font-bold text-gray-400 uppercase">Crédito</p>
+                            <p class="font-bold text-green-700 text-sm truncate" id="modal-credito">...</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 text-left text-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="text-gray-400 w-5">📞</span>
+                            <span class="font-medium" id="modal-tel">...</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-gray-400 w-5">📧</span>
+                            <span class="font-medium truncate" id="modal-mail">...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-3">
+                    <button id="close-modal-btn" class="py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-50 transition">
+                        Cerrar
+                    </button>
+                    
+                    <a id="btn-whatsapp" href="#" target="_blank" class="py-3 rounded-xl font-bold text-white bg-green-500 hover:bg-green-600 transition flex items-center justify-center gap-2 shadow-md">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        Confirmar Cita
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</Layout>
+
+<style>
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    .animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+    .animate-scale-in { animation: scaleIn 0.2s ease-out forwards; }
+</style>
+
+<script is:inline>
+    // --- LÓGICA DEL PANEL ---
+    let todasLasCitas = [];
+    let currentDate = new Date();
+    let selectedDate = new Date();
+    let claveSesion = localStorage.getItem('adminSessionKey');
+
+    const dom = {
+        loginScreen: document.getElementById('login-screen'),
+        dashboard: document.getElementById('dashboard-ui'),
+        loginForm: document.getElementById('login-form'),
+        calendarGrid: document.getElementById('calendar-grid'),
+        monthDisplay: document.getElementById('current-month-display'),
+        sideList: document.getElementById('lista-lateral'),
+        agendaList: document.getElementById('lista-citas-dia'),
+        labelDia: document.getElementById('label-dia-seleccionado'),
+        modal: document.getElementById('modal-detalle')
+    };
+
+    if(claveSesion) validarYEntrar(claveSesion);
+
+    dom.loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        validarYEntrar(document.getElementById('admin-pass').value);
+    });
+
+    async function validarYEntrar(clave) {
+        try {
+            const res = await fetch(`/obtener_todas_citas.php?clave=${clave}`);
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                // ORDENAR ASCENDENTE (Fecha, luego Hora)
+                todasLasCitas = data.data.sort((a, b) => {
+                    if (a.fecha !== b.fecha) return a.fecha.localeCompare(b.fecha);
+                    return a.hora.localeCompare(b.hora);
+                });
+
+                localStorage.setItem('adminSessionKey', clave);
+                dom.loginScreen.classList.add('hidden');
+                dom.dashboard.classList.remove('hidden');
+                
+                renderSideList();
+                renderCalendar();
+                seleccionarDia(new Date()); 
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+                localStorage.removeItem('adminSessionKey');
+            }
+        } catch (error) { alert("Error de conexión"); }
+    }
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        dom.monthDisplay.innerText = `${monthNames[month]} ${year}`;
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        dom.calendarGrid.innerHTML = '';
+
+        // Celdas vacías
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = "h-12 md:h-auto border-r border-b border-gray-100 bg-transparent";
+            dom.calendarGrid.appendChild(emptyCell);
+        }
+
+        // Días
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const citasDelDia = todasLasCitas.filter(c => c.fecha === dateStr);
+            const hayCitas = citasDelDia.length > 0;
+
+            const cell = document.createElement('div');
+            // Diseño Celda: Se adapta para ser grande en PC y pequeña en móvil
+            cell.className = `min-h-[3rem] md:h-auto border-r border-b border-gray-100 relative cursor-pointer hover:bg-blue-50 transition flex flex-col items-center md:items-start justify-start p-1 md:p-2 group ${dateStr === formatDateISO(selectedDate) ? 'bg-blue-50' : 'bg-white'}`;
+            
+            cell.onclick = () => {
+                seleccionarDia(new Date(year, month, day));
+                renderCalendar();
+            };
+
+            // Número del día
+            const dayNum = document.createElement('span');
+            dayNum.className = "text-gray-600 font-bold text-sm md:text-sm z-10 w-6 h-6 flex items-center justify-center rounded-full transition";
+            if(day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                dayNum.className += " bg-blue-600 text-white shadow-md";
+            }
+            dayNum.innerText = day;
+            cell.appendChild(dayNum);
+
+            // CONTENIDO DE CITAS
+            if (hayCitas) {
+                // Móvil: Puntito azul
+                const dot = document.createElement('div');
+                dot.className = "md:hidden w-1.5 h-1.5 bg-blue-500 rounded-full mt-1";
+                cell.appendChild(dot);
+
+                // Desktop: Pastillas con nombres (Visibles solo en md:flex)
+                const listPc = document.createElement('div');
+                listPc.className = "hidden md:flex flex-col gap-1 w-full mt-1 overflow-hidden";
+                citasDelDia.forEach(c => {
+                    const pill = document.createElement('div');
+                    pill.className = "text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded truncate font-medium hover:bg-blue-200 border-l-2 border-blue-500";
+                    pill.innerText = `${c.hora.slice(0,5)} ${c.nombre.split(' ')[0]}`;
+                    // Al dar click en la pastilla en PC, abre el modal directo
+                    pill.onclick = (e) => {
+                        e.stopPropagation();
+                        abrirModal(c);
+                    };
+                    listPc.appendChild(pill);
+                });
+                cell.appendChild(listPc);
+            }
+
+            dom.calendarGrid.appendChild(cell);
+        }
+    }
+
+    function seleccionarDia(fecha) {
+        selectedDate = fecha;
+        const dateStr = formatDateISO(fecha);
+        
+        dom.labelDia.innerText = fecha.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+
+        const citas = todasLasCitas.filter(c => c.fecha === dateStr);
+        dom.agendaList.innerHTML = '';
+
+        if(citas.length === 0) {
+            dom.agendaList.innerHTML = `
+                <div class="text-center py-8 bg-white rounded-xl border border-dashed border-gray-300">
+                    <p class="text-gray-400 text-sm">No hay citas para este día.</p>
+                </div>
+            `;
+        } else {
+            citas.forEach(cita => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer hover:shadow-md hover:border-blue-200 transition";
+                card.onclick = () => abrirModal(cita);
+
+                card.innerHTML = `
+                    <div class="bg-blue-50 text-blue-800 font-bold text-sm px-3 py-3 rounded-lg flex flex-col items-center min-w-[3.5rem]">
+                        <span>${cita.hora.slice(0,5)}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-gray-800 truncate">${cita.nombre}</h4>
+                        <p class="text-xs text-gray-500 truncate">${cita.tipo_credito} • ${cita.modelo_interes}</p>
+                    </div>
+                    <div class="text-gray-300 text-xl">›</div>
+                `;
+                dom.agendaList.appendChild(card);
+            });
+        }
+    }
+
+    function renderSideList() {
+        const list = document.getElementById('lista-lateral');
+        if(!list) return;
+        list.innerHTML = '';
+        const hoyStr = formatDateISO(new Date());
+        const futuras = todasLasCitas.filter(c => c.fecha >= hoyStr).slice(0, 5);
+
+        futuras.forEach(cita => {
+            const item = document.createElement('div');
+            item.className = "p-3 bg-white border border-gray-100 rounded-lg shadow-sm hover:border-blue-300 transition cursor-pointer flex gap-3 items-center";
+            item.onclick = () => abrirModal(cita);
+            const [y,m,d] = cita.fecha.split('-');
+            const mes = new Date(y, m-1, d).toLocaleString('es-ES', { month: 'short' });
+
+            item.innerHTML = `
+                <div class="bg-gray-100 text-gray-600 rounded-lg p-2 text-center min-w-[3rem]">
+                    <div class="text-[10px] uppercase font-bold">${mes}</div>
+                    <div class="text-base font-bold leading-none">${d}</div>
+                </div>
+                <div class="overflow-hidden">
+                    <h4 class="font-bold text-gray-800 truncate text-xs">${cita.nombre}</h4>
+                    <p class="text-[10px] text-gray-500">⏰ ${cita.hora.slice(0,5)}</p>
+                </div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    function abrirModal(cita) {
+        document.getElementById('modal-nombre').innerText = cita.nombre;
+        document.getElementById('modal-inicial').innerText = cita.nombre.charAt(0).toUpperCase();
+        document.getElementById('modal-fecha-hora').innerText = `${cita.fecha} • ${cita.hora.slice(0,5)} hrs`;
+        document.getElementById('modal-tel').innerText = cita.telefono;
+        document.getElementById('modal-mail').innerText = cita.correo || '---';
+        document.getElementById('modal-modelo').innerText = cita.modelo_interes;
+        document.getElementById('modal-credito').innerText = cita.tipo_credito;
+        
+        const btnWa = document.getElementById('btn-whatsapp');
+        const numeroLimpio = cita.telefono.replace(/\D/g, ''); 
+        btnWa.href = `https://wa.me/52${numeroLimpio}?text=Hola%20${cita.nombre.split(' ')[0]},%20te%20escribo%20de%20Sadasi%20para%20confirmar%20tu%20cita.`;
+
+        dom.modal.classList.remove('hidden');
+    }
+
+    function formatDateISO(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    document.getElementById('close-modal').onclick = () => dom.modal.classList.add('hidden');
+    document.getElementById('close-modal-btn').onclick = () => dom.modal.classList.add('hidden');
+    document.getElementById('prev-month').onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
+    document.getElementById('next-month').onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
+    document.getElementById('today-btn').onclick = () => { currentDate = new Date(); seleccionarDia(new Date()); renderCalendar(); };
+    window.logout = () => { localStorage.removeItem('adminSessionKey'); location.reload(); };
+
+</script>
