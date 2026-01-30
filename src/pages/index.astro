@@ -7,16 +7,20 @@ import PromoGroup from '../components/PromoGroup.astro';
 import Map from '../components/Map.astro';
 import Agenda from '../components/Agenda.astro'; // <--- Importamos Agenda
 import Footer from '../components/Footer.astro'; // <--- Importamos Footer
+import CanteraPromo from '../components/CanteraPromo.astro';
 ---
 
 <Layout title="Casas Sadasi Chalco | Tu Nuevo Hogar">
 	<Header />
 	
 	<main>
+		<CanteraPromo />
 		<Hero />
 		<Benefits />
 		<PromoGroup />
 		<Map />
-		<Agenda /> </main>
+		<Agenda /> 
+	</main>
 
-	<Footer /> </Layout>
+	<Footer />
+ </Layout>

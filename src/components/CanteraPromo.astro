@@ -1,0 +1,237 @@
+---
+// --- 1. TUS IMÁGENES DEL CARRUSEL (PRINCIPAL) ---
+// CAMBIO: Ahora en lugar de solo el link, ponemos { src: "...", label: "..." }
+const imagenesCarrusel = [
+    { 
+        src: "/cantera/departamento-modelo-granito-cantera.jpg", 
+        label: "Vista Exterior - Modelo Granito" 
+    },
+    { 
+        src: "/cantera/recamara-principal.jpg", 
+        label: "Recámara Principal con excelente iluminación" 
+    },
+    { 
+        src: "/cantera/sala-comedor.jpg", 
+        label: "Amplia estancia de Sala-Comedor" 
+    },
+    { 
+        src: "/cantera/cocina.jpg", 
+        label: "Cocina equipada" 
+    }
+];
+
+// --- 2. CONFIGURACIÓN DE AMENIDADES (TARJETAS DE ABAJO) ---
+const amenidades = [
+    {
+        titulo: "⚽ Multicanchas",
+        desc: "Espacios equipados para disfrutar con tu familia sin salir de casa.",
+        img: "/cantera/cantera-chalco-multicancha-2.jpg"
+    },
+    {
+        titulo: "🏃 Trotapista",
+        desc: "Circuito seguro para ejercitarte al aire libre dentro del desarrollo.",
+        img: "/cantera/cantera-chalco-general.jpg"
+    },
+    {
+        titulo: "🛡️ Seguridad 24/7",
+        desc: "Acceso controlado y vigilancia para la tranquilidad de los tuyos.",
+        img: "/cantera/cantera-chalco-acceso.jpg"
+    }
+];
+---
+
+<section id="cantera-seccion" class="relative bg-stone-900 text-white overflow-hidden border-b-8 border-stone-600 font-sans">
+    
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=1470" 
+             class="w-full h-full object-cover opacity-20 mix-blend-overlay animate-slow-zoom" 
+             alt="Fondo Textura">
+        <div class="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-900/95 to-stone-900/40"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-16 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            
+            <div class="lg:w-1/2 space-y-6">
+                <div class="scroll-trigger animate-hidden">
+                    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 mb-2">
+                        <span class="text-2xl">🏢</span>
+                        <span class="font-bold tracking-widest uppercase text-xs text-stone-300">Desarrollo Premium</span>
+                    </div>
+
+                    <h2 class="text-4xl md:text-6xl font-extrabold leading-tight">
+                        CANTERA <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-orange-100">CHALCO</span>
+                    </h2>
+
+                    <p class="text-lg text-stone-300 max-w-lg leading-relaxed mt-4">
+                        Vive la exclusividad en nuestro <strong class="text-white">Modelo Granito</strong>. 
+                        Departamentos diseñados para quienes buscan seguridad, estilo y las mejores amenidades deportivas.
+                    </p>
+                </div>
+
+                <div class="bg-white/5 p-6 rounded-2xl border border-white/10 mt-8 backdrop-blur-sm scroll-trigger animate-hidden delay-200">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <span class="w-2 h-8 bg-orange-400 rounded-full"></span>
+                        Modelo Granito (57.65 m²)
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="p-3 bg-stone-800 rounded-xl">
+                            <span class="block text-2xl mb-1">🛏️</span>
+                            <span class="text-xs text-stone-400 uppercase font-bold">2 Recámaras</span>
+                        </div>
+                        <div class="p-3 bg-stone-800 rounded-xl">
+                            <span class="block text-2xl mb-1">🚿</span>
+                            <span class="text-xs text-stone-400 uppercase font-bold">1 Baño</span>
+                        </div>
+                        <div class="p-3 bg-stone-800 rounded-xl">
+                            <span class="block text-2xl mb-1">🛋️</span>
+                            <span class="text-xs text-stone-400 uppercase font-bold">Sala/Comedor</span>
+                        </div>
+                        <div class="p-3 bg-stone-800 rounded-xl">
+                            <span class="block text-2xl mb-1">🚗</span>
+                            <span class="text-xs text-stone-400 uppercase font-bold">1 Estac.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4 scroll-trigger animate-hidden delay-300">
+                    <a href="#agenda" 
+                       class="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/20 text-center flex items-center justify-center gap-2 transform hover:-translate-y-1">
+                        <span>📅 Agendar Cita para Cantera</span>
+                    </a>
+                    <button onclick="document.getElementById('detalles-cantera').scrollIntoView({behavior: 'smooth'})"
+                            class="px-8 py-4 bg-stone-800 hover:bg-stone-700 text-stone-300 font-bold rounded-xl transition-all border border-stone-700 text-center">
+                        Ver más detalles
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 relative w-full scroll-trigger animate-hidden delay-200">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-orange-500/20 to-blue-500/20 rounded-3xl blur-xl"></div>
+                
+                <div class="relative bg-stone-800 rounded-3xl p-2 border border-stone-700 shadow-2xl rotate-1 hover:rotate-0 transition-all duration-500 overflow-hidden group">
+                    <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
+                        <div id="carousel-track" class="flex transition-transform duration-500 ease-out h-full w-full">
+                            {imagenesCarrusel.map((item, index) => (
+                                <div class="min-w-full h-full relative">
+                                    <img src={item.src} alt={`Vista Cantera ${index + 1}`} class="w-full h-full object-cover" loading="lazy">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                    
+                                    <div class="absolute bottom-0 left-0 right-0 p-6 text-center transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                        <p class="text-white font-bold text-lg md:text-xl drop-shadow-lg bg-black/30 backdrop-blur-sm inline-block px-4 py-1 rounded-full border border-white/10">
+                                            {item.label}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button id="prev-btn" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-orange-500 transition opacity-0 group-hover:opacity-100 z-10">❮</button>
+                        <button id="next-btn" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-orange-500 transition opacity-0 group-hover:opacity-100 z-10">❯</button>
+                        
+                        <div class="absolute top-4 right-4 bg-green-500/90 backdrop-blur text-white px-3 py-1 rounded-full font-bold shadow-lg flex items-center gap-2 z-10 text-xs pointer-events-none">
+                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                            Entrega Inmediata
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="detalles-cantera" class="mt-16 pt-16 border-t border-stone-800">
+            <h3 class="text-2xl font-bold mb-8 text-center text-stone-400">Amenidades Exclusivas</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {amenidades.map((item, index) => (
+                    <div class="amenidad-card group relative bg-stone-800/50 p-4 rounded-2xl border border-stone-700 hover:bg-stone-800 hover:border-orange-500/50 transition-all cursor-pointer flex items-center gap-4 scroll-trigger animate-hidden" 
+                         data-img={item.img} 
+                         onclick="abrirModal(this.dataset.img)">
+                        
+                        <div class="flex-1">
+                            <h4 class="text-orange-400 font-bold text-lg mb-1 group-hover:text-orange-300 transition">{item.titulo}</h4>
+                            <p class="text-xs text-stone-400 leading-snug">{item.desc}</p>
+                            <span class="text-[10px] text-stone-500 mt-2 block uppercase tracking-wider group-hover:text-white transition">Clic para ver foto</span>
+                        </div>
+
+                        <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden border border-stone-600 group-hover:scale-105 transition shadow-lg relative">
+                            <img src={item.img} alt={item.titulo} class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" loading="lazy">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition">
+                                <span class="text-white text-xs font-bold drop-shadow-md group-hover:hidden">🔍</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 transition-opacity duration-300 opacity-0" onclick="cerrarModal()">
+        <div class="relative max-w-4xl w-full max-h-[90vh]">
+            <button class="absolute -top-12 right-0 text-white text-4xl hover:text-orange-500 transition" onclick="cerrarModal()">&times;</button>
+            <img id="lightbox-img" src="" class="w-full h-full object-contain rounded-lg shadow-2xl border border-white/10" alt="Vista Ampliada">
+        </div>
+    </div>
+
+</section>
+
+<style>
+    .animate-hidden { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .animate-visible { opacity: 1; transform: translateY(0); }
+    .delay-200 { transition-delay: 0.2s; }
+    .delay-300 { transition-delay: 0.3s; }
+    @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+    .animate-slow-zoom { animation: slowZoom 20s infinite alternate ease-in-out; }
+    #lightbox-modal.flex { display: flex !important; }
+    #lightbox-modal.opacity-100 { opacity: 1 !important; }
+</style>
+
+<script is:inline>
+    // --- LÓGICA MODAL ---
+    const modal = document.getElementById('lightbox-modal');
+    const modalImg = document.getElementById('lightbox-img');
+
+    window.abrirModal = function(src) {
+        modalImg.src = src;
+        modal.classList.remove('hidden');
+        setTimeout(() => { modal.classList.add('flex', 'opacity-100'); }, 10);
+    }
+
+    window.cerrarModal = function() {
+        modal.classList.remove('opacity-100');
+        setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); modalImg.src = ''; }, 300);
+    }
+
+    // --- LÓGICA CARRUSEL ---
+    const track = document.getElementById('carousel-track');
+    const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const slides = track.children;
+    let currentIndex = 0;
+    let autoPlayInterval;
+
+    function updateCarousel() { track.style.transform = `translateX(-${currentIndex * 100}%)`; }
+    function nextSlide() { currentIndex = (currentIndex + 1) % slides.length; updateCarousel(); }
+    function prevSlide() { currentIndex = (currentIndex - 1 + slides.length) % slides.length; updateCarousel(); }
+    
+    nextBtn.addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
+    prevBtn.addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+    
+    function startAutoPlay() { autoPlayInterval = setInterval(nextSlide, 4000); }
+    function resetAutoPlay() { clearInterval(autoPlayInterval); startAutoPlay(); }
+    
+    let touchStartX = 0;
+    track.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; clearInterval(autoPlayInterval); }, {passive: true});
+    track.addEventListener('touchend', (e) => { 
+        if (touchStartX - e.changedTouches[0].screenX > 50) nextSlide();
+        if (e.changedTouches[0].screenX - touchStartX > 50) prevSlide();
+        startAutoPlay(); 
+    }, {passive: true});
+
+    updateCarousel();
+    startAutoPlay();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('animate-visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.scroll-trigger').forEach(trigger => observer.observe(trigger));
+</script>
