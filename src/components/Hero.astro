@@ -1,45 +1,58 @@
 ---
+// --- CONFIGURACIÓN DE IMÁGENES LOCALES ---
+// Asegúrate de tener estas fotos en "public/hero/"
+const heroImages = [
+    "/hero/hero1.jpg",
+    "/hero/hero2.jpg",
+    "/hero/hero3.jpg",
+    "/hero/hero4.jpg",
+    "/hero/hero5.jpg"
+];
 ---
+
 <section class="relative h-[90vh] flex items-center overflow-hidden" id="inicio">
-    <div class="absolute inset-0 z-0">
-        <img 
-            src="https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?q=80&w=2574&auto=format&fit=crop" 
-            alt="Casa Modelo Sadasi" 
-            class="w-full h-full object-cover animate-pulse-slow" 
-            style="animation: none;" 
-        />
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/95 to-blue-900/30"></div>
+    
+    <div id="hero-slides-container" class="absolute inset-0 z-0 bg-[#293F71]">
+        {heroImages.map((img, index) => (
+            <img 
+                src={img} 
+                alt={`Casa Modelo Sadasi ${index + 1}`} 
+                class={`hero-slide absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${index === 0 ? 'opacity-100 scale-105 z-10' : 'opacity-0 scale-100 z-0'}`}
+            />
+        ))}
+        <div class="absolute inset-0 bg-gradient-to-r from-[#293F71]/95 via-[#293F71]/60 to-[#293F71]/20 z-20"></div>
     </div>
 
-    <div class="relative z-10 container mx-auto px-4 text-white">
+    <div class="relative z-30 container mx-auto px-4 text-white">
         <div class="max-w-2xl">
             <div data-aos="fade-right" data-aos-delay="100">
-                <span class="bg-yellow-400 text-blue-900 py-1 px-3 rounded-full font-bold text-sm uppercase tracking-wide mb-4 inline-block shadow-lg">
+                <span class="bg-[#E76627] text-white py-1 px-3 rounded-full font-bold text-sm uppercase tracking-wide mb-4 inline-block shadow-lg">
                     Asesoría Certificada 🏡
                 </span>
             </div>
             
-            <h1 data-aos="fade-up" data-aos-delay="200" class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+            <h1 data-aos="fade-up" data-aos-delay="200" class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 drop-shadow-lg">
                 Tu Nuevo Hogar en <br/>
-                <span class="text-yellow-400">Los Héroes Chalco</span>
+                <span class="text-[#E76627]">Los Héroes Chalco</span>
             </h1>
             
-            <p data-aos="fade-up" data-aos-delay="400" class="text-xl mb-8 text-gray-100 font-light">
+            <p data-aos="fade-up" data-aos-delay="400" class="text-xl mb-8 text-gray-100 font-light leading-relaxed drop-shadow-md">
                 Disfruta de espacios amplios, escuelas y parques. 
-                Te ayudamos a tramitar tu crédito <strong>Infonavit, Fovissste o Bancario</strong> sin costo.
+                Te ayudamos a tramitar tu crédito 
+                <strong class="text-white font-bold border-b-2 border-[#E76627]">Infonavit, Fovissste o Bancario</strong> sin costo.
             </p>
 
             <div data-aos="fade-up" data-aos-delay="600" class="flex flex-col sm:flex-row gap-4">
-                <a href="#agenda" class="bg-white text-blue-900 hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-center transition shadow-lg transform hover:scale-105">
+                <a href="#agenda" class="bg-white text-[#E76627] hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-center transition shadow-lg transform hover:scale-105 active:scale-95 border-2 border-white">
                     Agendar Visita Gratis
                 </a>
-                <a href="#beneficios" class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-bold text-center transition">
+                <a href="#beneficios" class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg font-bold text-center transition backdrop-blur-sm">
                     Ver Beneficios
                 </a>
             </div>
 
             <p data-aos="fade-in" data-aos-delay="800" class="mt-6 text-sm text-gray-300 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#E76627]" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Atención directa con Karen Martínez
@@ -47,3 +60,31 @@
         </div>
     </div>
 </section>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('hero-slides-container');
+        if (!container) return;
+
+        const slides = container.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        const intervalTime = 5000;
+
+        function nextSlide() {
+            const active = slides[currentSlide];
+            active.classList.remove('opacity-100', 'z-10', 'scale-105');
+            active.classList.add('opacity-0', 'z-0', 'scale-100');
+
+            currentSlide = (currentSlide + 1) % totalSlides;
+
+            const next = slides[currentSlide];
+            next.classList.remove('opacity-0', 'z-0', 'scale-100');
+            next.classList.add('opacity-100', 'z-10', 'scale-105');
+        }
+
+        if (totalSlides > 1) {
+            setInterval(nextSlide, intervalTime);
+        }
+    });
+</script>
