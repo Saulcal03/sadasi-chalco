@@ -1,29 +1,52 @@
 ---
 ---
-<header class="bg-white/95 backdrop-blur-md shadow-sm fixed w-full top-0 z-50 transition-all duration-300 border-b border-gray-100">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+<header class="bg-white/95 backdrop-blur-md shadow-sm fixed w-full top-0 z-50 transition-all duration-300 border-b border-gray-100 h-20 md:h-24">
+    <div class="container mx-auto px-4 h-full flex justify-between items-center">
         
-        <a href="#" class="flex items-center group">
+        <a href="/" class="flex items-center group h-full py-2">
             <img 
                 src="/logokaren.png" 
                 alt="Logo Karen Martínez" 
-                class="h-14 md:h-16 w-auto object-contain group-hover:opacity-90 transition-opacity duration-300"
+                class="h-full w-auto object-contain group-hover:opacity-90 transition-opacity duration-300"
             />
         </a>
 
-        <nav class="hidden md:flex space-x-10 items-center">
-            <a href="#inicio" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-blue-900 transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-blue-900 after:transition-all hover:after:w-full">
+        <nav class="hidden md:flex space-x-8 lg:space-x-10 items-center">
+            <a href="/" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-[#293F71] transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-[#293F71] after:transition-all hover:after:w-full">
                 Inicio
             </a>
-            <a href="#beneficios" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-blue-900 transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-blue-900 after:transition-all hover:after:w-full">
+            
+            <div class="relative group">
+                <button class="flex items-center gap-1 text-sm font-bold uppercase tracking-widest text-gray-500 group-hover:text-[#293F71] transition focus:outline-none h-full py-2">
+                    Modelos
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                
+                <div class="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
+                    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+                        <a href="/modelos" class="block px-6 py-4 text-base font-bold text-gray-600 hover:bg-blue-50 hover:text-[#293F71] border-b border-gray-50 transition flex justify-between items-center group/item">
+                            Héroes Chalco
+                            <span class="text-[#E76627] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                        </a>
+                        <a href="/cantera" class="block px-6 py-4 text-base font-bold text-gray-600 hover:bg-stone-50 hover:text-[#776E63] transition flex justify-between items-center group/item">
+                            Cantera
+                            <span class="text-[#C0B295] opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/#beneficios" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-[#293F71] transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-[#293F71] after:transition-all hover:after:w-full">
                 Beneficios
             </a>
-            <a href="#ubicacion" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-blue-900 transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-blue-900 after:transition-all hover:after:w-full">
+            <a href="/#ubicacion" class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-[#293F71] transition relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-0.5 after:bg-[#293F71] after:transition-all hover:after:w-full">
                 Ubicación
             </a>
         </nav>
 
-        <a href="#agenda" class="hidden md:inline-flex items-center gap-2 bg-blue-900 text-white px-7 py-3 rounded-full font-bold text-sm hover:bg-blue-800 transition shadow-lg hover:shadow-blue-900/20 transform hover:-translate-y-0.5 tracking-wide">
+        <a href="/#agenda" class="hidden md:inline-flex items-center gap-2 bg-[#293F71] text-white px-6 py-2.5 rounded-full font-bold text-xs md:text-sm hover:bg-[#1e2e52] transition shadow-lg hover:shadow-blue-900/20 transform hover:-translate-y-0.5 tracking-wide">
             <span>AGENDAR CITA</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -37,12 +60,32 @@
         </button>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 absolute w-full shadow-2xl">
-        <div class="flex flex-col p-6 space-y-6 text-center">
-            <a href="#inicio" class="text-gray-600 hover:text-blue-900 font-bold uppercase tracking-widest text-sm">Inicio</a>
-            <a href="#beneficios" class="text-gray-600 hover:text-blue-900 font-bold uppercase tracking-widest text-sm">Beneficios</a>
-            <a href="#ubicacion" class="text-gray-600 hover:text-blue-900 font-bold uppercase tracking-widest text-sm">Ubicación</a>
-            <a href="#agenda" class="bg-blue-900 text-white font-bold py-4 px-4 rounded-xl shadow-md uppercase text-sm tracking-wider">
+    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 absolute w-full shadow-2xl top-full left-0 overflow-y-auto max-h-[80vh]">
+        <div class="flex flex-col p-6 space-y-4 text-center">
+            <a href="/" class="text-gray-600 hover:text-[#293F71] font-bold uppercase tracking-widest text-sm transition py-2">Inicio</a>
+            
+<div class="bg-gray-50 rounded-xl overflow-hidden transition-all duration-300">
+                <button id="mobile-dropdown-btn" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-gray-600 font-bold uppercase tracking-widest text-sm hover:text-[#293F71] transition">
+                    <span>Modelos</span>
+                    <svg id="mobile-arrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                
+                <div id="mobile-dropdown-menu" class="hidden flex-col bg-white border-t border-gray-100">
+                    <a href="/modelos" class="block py-3 text-[#293F71] font-bold text-sm hover:bg-gray-50 border-b border-gray-50 transition">
+                        🏠 Héroes Chalco
+                    </a>
+                    <a href="/cantera" class="block py-3 text-[#776E63] font-bold text-sm hover:bg-stone-50 transition">
+                        🏢 Cantera
+                    </a>
+                </div>
+            </div>
+
+            <a href="/#beneficios" class="text-gray-600 hover:text-[#293F71] font-bold uppercase tracking-widest text-sm transition py-2">Beneficios</a>
+            <a href="/#ubicacion" class="text-gray-600 hover:text-[#293F71] font-bold uppercase tracking-widest text-sm transition py-2">Ubicación</a>
+            
+            <a href="/#agenda" class="bg-[#E76627] text-white font-bold py-4 px-4 rounded-xl shadow-md uppercase text-sm tracking-wider hover:bg-[#d1551b] transition mt-4">
                 📅 Agendar Cita
             </a>
         </div>
@@ -50,19 +93,36 @@
 </header>
 
 <script>
+    // LÓGICA DEL MENÚ
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    const links = mobileMenu?.querySelectorAll('a');
+    
+    // LÓGICA DEL DROPDOWN MÓVIL
+    const mobileDropdownBtn = document.getElementById('mobile-dropdown-btn');
+    const mobileDropdownMenu = document.getElementById('mobile-dropdown-menu');
+    const mobileArrow = document.getElementById('mobile-arrow');
 
     if (menuBtn && mobileMenu) {
+        // Abrir/Cerrar menú principal
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
 
-        links?.forEach(link => {
+        // Cerrar menú al hacer clic en enlaces normales
+        const links = mobileMenu.querySelectorAll('a');
+        links.forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
             });
+        });
+    }
+
+    // Funcionalidad del Acordeón Móvil
+    if (mobileDropdownBtn && mobileDropdownMenu && mobileArrow) {
+        mobileDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita que se cierre el menú principal
+            mobileDropdownMenu.classList.toggle('hidden');
+            mobileArrow.classList.toggle('rotate-180');
         });
     }
 </script>

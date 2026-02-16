@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Aquí definimos los datos y los ICONOS VECTORIALES (SVG)
+const modelos = [
+  {
+    id: "cipres-2",
+    nombre: "Casa 2 Recámaras",
+    precio: "$1,307,500",
+    construccion: "70.38 m²",
+    terreno: "60 m²",
+    recamaras: 2,
+    banos: 1.5,
+    estacionamiento: 1,
+    descripcion: "Ideal para familias pequeñas. Cuenta con opción a crecimiento futuro. Pregunta por descuentos especiales según tu forma de pago y ubicación.",
+    ubicacion: "Héroes Chalco III. Av. Nacional 1417. Col. San Martin Cuautlalpan.",
+    creditos: ["Infonavit", "Fovissste", "Bancario"],
+    tourVirtual: "https://my.matterport.com/show/?m=mVvK3ohYeGt",
+    imagen: "https://firebasestorage.googleapis.com/v0/b/sadasi-integraciones.appspot.com/o/products%2F62d77ee93db75117d850304c%2Fcipres-2r-los-heroes-chalco-2.jpg?alt=media&token=5ae7ba0e-0f76-4c3b-800c-2f302d9b4e10" 
+  },
+  {
+    id: "cipres-4",
+    nombre: "Casa 4 Recámaras",
+    precio: "$1,535,500",
+    construccion: "104.52 m²",
+    terreno: "60 m²",
+    recamaras: 4,
+    banos: 2.5,
+    estacionamiento: 1,
+    descripcion: "Casa amplia de tres niveles. Espacios diseñados para la privacidad y comodidad de cada integrante de la familia.",
+    ubicacion: "Héroes Chalco III. Av. Nacional 1417. Col. San Martin Cuautlalpan.",
+    creditos: ["Infonavit", "Fovissste", "Bancario"],
+    tourVirtual: "https://my.matterport.com/show/?m=hiUYr6bXhuY&ss=5&sr=-2.87,1.06",
+    imagen: "https://firebasestorage.googleapis.com/v0/b/sadasi-integraciones.appspot.com/o/products%2F62d77ee93db75117d850304d%2Fcipres-4r-los-heroes-chalco-3.jpg?alt=media&token=b90e1c22-3c0f-483f-a04e-0759655d026a"
+  }
+];
+
+// --- FUNCIONES PARA DIBUJAR LOS ICONOS PREMIUM ---
+const iconArea = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0L21.3 15.3z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>`;
+const iconBed = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>`;
+const iconBath = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>`;
+const iconCar = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>`;
+const iconPin = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>`;
+const iconCredit = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>`;
+const iconVR = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+---
+
+<Layout title="Modelos Disponibles - Karen Martínez Sadasi">
+    <Header />
+    
+    <section class="relative pt-40 pb-20 bg-[#293F71] text-white overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center" data-aos="fade-down">
+            <span class="text-[#E76627] font-bold tracking-widest uppercase mb-4 block">Catálogo Exclusivo</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">Nuestros Modelos</h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto font-light">
+                Encuentra el espacio perfecto en <strong class="text-white">Los Héroes Chalco III</strong>. 
+                Calidad, diseño y plusvalía en cada metro cuadrado.
+            </p>
+        </div>
+    </section>
+
+    <main class="bg-gray-50 py-20">
+        <div class="container mx-auto px-4 space-y-24">
+            
+            {modelos.map((casa, index) => (
+                <div class={`flex flex-col lg:flex-row items-center gap-12 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`} data-aos="fade-up">
+                    
+                    <div class="lg:w-1/2 w-full relative group">
+                        <div class="absolute inset-0 bg-[#E76627] rounded-3xl transform translate-x-3 translate-y-3 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
+                            <img 
+                                src={casa.imagen} 
+                                alt={casa.nombre} 
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                            />
+                            <div class="absolute top-6 right-6 bg-white/95 backdrop-blur px-6 py-3 rounded-full shadow-lg border-l-4 border-[#E76627]">
+                                <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Desde</span>
+                                <span class="text-2xl font-extrabold text-[#293F71]">{casa.precio}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 w-full space-y-6">
+                        <h2 class="text-4xl font-bold text-[#293F71]">{casa.nombre}</h2>
+                        <div class="w-20 h-1.5 bg-[#E76627] rounded-full"></div>
+                        
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            {casa.descripcion}
+                        </p>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-4">
+                            <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 group-hover:border-[#E76627]/30 transition">
+                                <div class="text-[#293F71] mb-2 flex justify-center" set:html={iconArea}></div>
+                                <span class="text-sm font-bold text-gray-700">{casa.construccion}</span>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 group-hover:border-[#E76627]/30 transition">
+                                <div class="text-[#293F71] mb-2 flex justify-center" set:html={iconBed}></div>
+                                <span class="text-sm font-bold text-gray-700">{casa.recamaras} Rec.</span>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 group-hover:border-[#E76627]/30 transition">
+                                <div class="text-[#293F71] mb-2 flex justify-center" set:html={iconBath}></div>
+                                <span class="text-sm font-bold text-gray-700">{casa.banos} Baños</span>
+                            </div>
+                            <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-gray-100 group-hover:border-[#E76627]/30 transition">
+                                <div class="text-[#293F71] mb-2 flex justify-center" set:html={iconCar}></div>
+                                <span class="text-sm font-bold text-gray-700">{casa.estacionamiento} Auto</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100/50 space-y-3">
+                            <div class="flex items-start gap-3">
+                                <div class="text-[#E76627] mt-0.5" set:html={iconPin}></div>
+                                <p class="text-sm text-[#293F71] leading-relaxed">
+                                    <strong class="text-gray-900 block mb-0.5">Ubicación:</strong> 
+                                    {casa.ubicacion}
+                                </p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="text-[#E76627] mt-0.5" set:html={iconCredit}></div>
+                                <p class="text-sm text-[#293F71] leading-relaxed">
+                                    <strong class="text-gray-900 block mb-0.5">Créditos aceptados:</strong> 
+                                    {casa.creditos.join(', ')}.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <a 
+                                href="/#agenda" 
+                                class="flex-1 bg-[#293F71] text-white text-center py-4 rounded-xl font-bold hover:bg-[#1e2e52] transition shadow-lg hover:shadow-blue-900/30"
+                            >
+                                Agendar Visita
+                            </a>
+                            <a 
+                                href={casa.tourVirtual} 
+                                target="_blank"
+                                class="flex-1 bg-white border-2 border-[#E76627] text-[#E76627] text-center py-4 rounded-xl font-bold hover:bg-[#E76627] hover:text-white transition flex items-center justify-center gap-2 group/btn"
+                            >
+                                <div class="transition-colors group-hover/btn:text-white" set:html={iconVR}></div>
+                                <span>Ver Recorrido Virtual</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            ))}
+
+        </div>
+    </main>
+
+    <Footer />
+</Layout>
