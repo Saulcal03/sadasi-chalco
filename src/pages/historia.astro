@@ -1,0 +1,150 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// --- DATOS DE TESTIMONIOS ---
+const testimonios = [
+    "Gracias por tu paciencia y apoyo en todo el proceso. Nos hiciste sentir seguros desde el primer día.",
+    "Excelente servicio, siempre pendiente de nosotros. Comprar nuestra casa fue mucho más fácil contigo.",
+    "No solo nos ayudaste a comprar, nos acompañaste en cada paso. Estamos muy agradecidos.",
+    "Tu profesionalismo y claridad nos dieron mucha confianza. Gracias por ayudarnos a cumplir este sueño.",
+    "Siempre respondiste nuestras dudas con calma y amabilidad. Fue una gran experiencia trabajar contigo.",
+    "Gracias por tu dedicación. Se nota que amas lo que haces.",
+    "Hiciste que todo el proceso fuera sencillo y entendible. Te recomendaríamos sin dudar.",
+    "Nos sentimos apoyados en todo momento. Gracias por ayudarnos a encontrar nuestro hogar.",
+    "Tu compromiso marcó la diferencia. Gracias por tu atención y seguimiento."
+];
+
+// --- ICONOS SVG ---
+const iconQuote = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" class="text-[#E76627]/20"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>`;
+const iconAward = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#E76627]"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>`;
+---
+
+<Layout title="Mi Historia - Karen Martínez">
+    <Header />
+
+    <section class="relative h-[400px] md:h-[500px] bg-cover bg-center bg-[url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop')]">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#293F71]/90 to-transparent"></div>
+        
+        <div class="container mx-auto px-4 h-full flex flex-col justify-end pb-16 relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4" data-aos="fade-up">
+                Más que una asesora, <br/> tu aliada.
+            </h1>
+            <p class="text-xl text-blue-100 font-light" data-aos="fade-up" data-aos-delay="100">
+                10 años construyendo confianza y cumpliendo sueños.
+            </p>
+        </div>
+
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20">
+            <div class="w-40 h-40 md:w-52 md:h-52 rounded-full border-[6px] border-white shadow-2xl overflow-hidden bg-white">
+                <img src="/karen-perfil.png" alt="Karen Martínez" class="w-full h-full object-cover" />
+            </div>
+        </div>
+    </section>
+
+
+    <main class="bg-gray-50 pt-32 pb-20">
+        <div class="container mx-auto px-4 max-w-4xl">
+
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl mb-20 text-center md:text-left space-y-8" data-aos="fade-up">
+                <div class="text-center">
+                    <span class="text-[#E76627] font-bold tracking-widest uppercase text-sm block mb-2">Mi Trayectoria</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#293F71] mb-6">Soy Karen Martínez</h2>
+                    <div class="w-20 h-1.5 bg-[#E76627] mx-auto rounded-full mb-8"></div>
+                </div>
+
+                <div class="space-y-6 text-gray-600 text-lg leading-relaxed text-justify md:text-left">
+                    <p>
+                        <strong class="text-[#293F71] text-xl">Asesora Inmobiliaria Certificada</strong> con más de <strong class="text-[#E76627]">10 años de experiencia</strong> en bienes raíces. A lo largo de este camino he tenido el honor de posicionarme como una de las asesoras mejor reconocidas a nivel nacional, gracias a certificaciones, resultados y, sobre todo, a la confianza de mis clientes.
+                    </p>
+                    <p>
+                        Mi trayectoria ha sido fruto del esfuerzo, la dedicación y la pasión por lo que hago. Este trabajo requiere paciencia, compromiso y un profundo respeto por cada familia y por cada proceso que nos acerca a su nuevo hogar.
+                    </p>
+                    <blockquote class="border-l-4 border-[#E76627] pl-6 italic text-gray-700 py-2 bg-orange-50 rounded-r-lg">
+                        "Detrás de cada entrega hay un equipo que suma, tiempo invertido y un propósito claro: brindar una experiencia segura, humana y profesional."
+                    </blockquote>
+                    <p>
+                        Mi mayor satisfacción es ver a las familias cumplir el sueño de tener casa propia. Agradezco a Dios, a mi familia y a mi equipo por ser parte de este logro constante.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-20" data-aos="fade-up">
+                <div class="text-center mb-12">
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <div set:html={iconAward}></div>
+                        <h3 class="text-2xl font-bold text-[#293F71]">Reconocimientos y Logros</h3>
+                    </div>
+                    <p class="text-gray-600">El resultado de la constancia y el compromiso con la excelencia.</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    
+                    <div class="aspect-square bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group border border-gray-100">
+                        <img src="/premios/Premio_1.webp" alt="Premio 1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    
+                    <div class="aspect-square bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group border border-gray-100">
+                         <img src="/premios/Premio_2.webp" alt="Premio 2" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    
+                    <div class="aspect-square bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group border border-gray-100">
+                         <img src="/premios/certificacion.webp" alt="Certificación" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="bg-[#293F71] p-8 md:p-12 rounded-3xl shadow-xl text-center text-white mb-24 relative overflow-hidden" data-aos="zoom-in">
+                <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                <div class="relative z-10 space-y-6">
+                    <h3 class="text-2xl md:text-3xl font-bold">Hoy quiero invitarte a vivir esta experiencia conmigo.</h3>
+                    <p class="text-blue-100 text-lg max-w-2xl mx-auto leading-relaxed">
+                        Permíteme acompañarte. Mi compromiso es brindar asesoría honesta, clara y trasparente en todo momento.
+                    </p>
+                    <a href="/#agenda" class="inline-block bg-[#E76627] hover:bg-[#d1551b] text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg hover:shadow-orange-900/30 transform hover:scale-105 mt-4">
+                        Comenzar mi Proceso Ahora
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-white py-20 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-orange-50 rounded-full blur-3xl opacity-60 -z-10 translate-x-[-50%] translate-y-[-50%]"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-60 -z-10 translate-x-[30%] translate-y-[30%]"></div>
+
+            <div class="container mx-auto px-4 max-w-6xl">
+                <div class="text-center mb-16" data-aos="fade-down">
+                    <span class="text-[#E76627] font-bold tracking-widest uppercase text-sm mb-2 block">Testimonios</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-[#293F71]">Lo que dicen mis clientes</h2>
+                    <p class="text-gray-600 mt-4">Comentarios que me gusta recordar y me motivan a seguir.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {testimonios.map((comentario, index) => (
+                        <div 
+                            class="bg-gray-50 p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative group"
+                            data-aos="fade-up"
+                            data-aos-delay={index * 100}
+                        >
+                            <div class="absolute top-4 left-4" set:html={iconQuote}></div>
+                            <p class="text-gray-700 italic leading-relaxed relative z-10 pt-6">
+                                "{comentario}"
+                            </p>
+                            <div class="mt-6 flex items-center gap-2">
+                                <div class="w-10 h-1 bg-[#E76627]/30 rounded-full group-hover:bg-[#E76627] transition-colors"></div>
+                                <span class="text-sm text-[#293F71] font-semibold">Cliente Satisfecho</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <Footer />
+</Layout>

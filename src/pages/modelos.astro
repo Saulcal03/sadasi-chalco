@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// Aquí definimos los datos y los ICONOS VECTORIALES (SVG)
+// DEFINICIÓN DE DATOS
 const modelos = [
   {
     id: "cipres-2",
@@ -18,7 +18,18 @@ const modelos = [
     ubicacion: "Héroes Chalco III. Av. Nacional 1417. Col. San Martin Cuautlalpan.",
     creditos: ["Infonavit", "Fovissste", "Bancario"],
     tourVirtual: "https://my.matterport.com/show/?m=mVvK3ohYeGt",
-    imagen: "https://firebasestorage.googleapis.com/v0/b/sadasi-integraciones.appspot.com/o/products%2F62d77ee93db75117d850304c%2Fcipres-2r-los-heroes-chalco-2.jpg?alt=media&token=5ae7ba0e-0f76-4c3b-800c-2f302d9b4e10" 
+    imagenes: [
+        "https://firebasestorage.googleapis.com/v0/b/sadasi-integraciones.appspot.com/o/products%2F62d77ee93db75117d850304c%2Fcipres-2r-los-heroes-chalco-2.jpg?alt=media&token=5ae7ba0e-0f76-4c3b-800c-2f302d9b4e10",
+        "/modelos/cipres-2/IMG_4718.webp",
+        "/modelos/cipres-2/IMG_4719.webp",
+        "/modelos/cipres-2/IMG_4721.webp",
+        "/modelos/cipres-2/IMG_4723.webp",
+        "/modelos/cipres-2/IMG_4724.webp",
+        "/modelos/cipres-2/IMG_4725.webp",
+        "/modelos/cipres-2/IMG_4726.webp",
+        "/modelos/cipres-2/IMG_4727.webp",
+        "/modelos/cipres-2/IMG_4730.webp"
+    ]
   },
   {
     id: "cipres-4",
@@ -33,11 +44,28 @@ const modelos = [
     ubicacion: "Héroes Chalco III. Av. Nacional 1417. Col. San Martin Cuautlalpan.",
     creditos: ["Infonavit", "Fovissste", "Bancario"],
     tourVirtual: "https://my.matterport.com/show/?m=hiUYr6bXhuY&ss=5&sr=-2.87,1.06",
-    imagen: "https://firebasestorage.googleapis.com/v0/b/sadasi-integraciones.appspot.com/o/products%2F62d77ee93db75117d850304d%2Fcipres-4r-los-heroes-chalco-3.jpg?alt=media&token=b90e1c22-3c0f-483f-a04e-0759655d026a"
+    imagenes: [
+  "/modelos/cipres-4/IMG_4836.webp",
+  "/modelos/cipres-4/IMG_4837.webp",
+  "/modelos/cipres-4/IMG_4838.webp",
+  "/modelos/cipres-4/IMG_4839.webp",
+  "/modelos/cipres-4/IMG_4840.webp",
+  "/modelos/cipres-4/IMG_4841.webp",
+  "/modelos/cipres-4/IMG_4842.webp",
+  "/modelos/cipres-4/IMG_4843.webp",
+  "/modelos/cipres-4/IMG_4844.webp",
+  "/modelos/cipres-4/IMG_4845.webp",
+  "/modelos/cipres-4/IMG_4846.webp",
+  "/modelos/cipres-4/IMG_4847.webp",
+  "/modelos/cipres-4/IMG_4848.webp",
+  "/modelos/cipres-4/IMG_4854.webp",
+  "/modelos/cipres-4/IMG_4857.webp",
+  "/modelos/cipres-4/IMG_4866.webp"
+    ]
   }
 ];
 
-// --- FUNCIONES PARA DIBUJAR LOS ICONOS PREMIUM ---
+// ICONOS SVG
 const iconArea = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0L21.3 15.3z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>`;
 const iconBed = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>`;
 const iconBath = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>`;
@@ -70,13 +98,40 @@ const iconVR = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" v
                     
                     <div class="lg:w-1/2 w-full relative group">
                         <div class="absolute inset-0 bg-[#E76627] rounded-3xl transform translate-x-3 translate-y-3 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
-                        <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-                            <img 
-                                src={casa.imagen} 
-                                alt={casa.nombre} 
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                            />
-                            <div class="absolute top-6 right-6 bg-white/95 backdrop-blur px-6 py-3 rounded-full shadow-lg border-l-4 border-[#E76627]">
+                        
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] bg-gray-200 slider-container group/slider">
+                            
+                            <div class="flex h-full w-full overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar slider-track" id={`slider-track-${index}`}>
+                                {casa.imagenes.map((img, i) => (
+                                    <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                        <img 
+                                            src={img} 
+                                            alt={`${casa.nombre} vista ${i+1}`} 
+                                            loading={i === 0 ? "eager" : "lazy"} 
+                                            class="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {casa.imagenes.length > 1 && (
+                                <>
+                                    <button class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#293F71] p-3 rounded-full shadow-lg opacity-0 group-hover/slider:opacity-100 transition-opacity z-20 prev-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                                    </button>
+                                    <button class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-[#293F71] p-3 rounded-full shadow-lg opacity-0 group-hover/slider:opacity-100 transition-opacity z-20 next-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </button>
+                                    
+                                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                                        {casa.imagenes.map((_, i) => (
+                                            <div class={`h-2 rounded-full bg-white transition-all duration-300 shadow-sm dot ${i === 0 ? 'w-6 opacity-100' : 'w-2 opacity-60'}`} data-index={i}></div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+
+                            <div class="absolute top-6 right-6 bg-white/95 backdrop-blur px-6 py-3 rounded-full shadow-lg border-l-4 border-[#E76627] z-10 pointer-events-none">
                                 <span class="block text-xs text-gray-500 uppercase font-bold tracking-wider">Desde</span>
                                 <span class="text-2xl font-extrabold text-[#293F71]">{casa.precio}</span>
                             </div>
@@ -153,3 +208,61 @@ const iconVR = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" v
 
     <Footer />
 </Layout>
+
+<style>
+    /* Ocultar barra de scroll pero permitir scroll */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.slider-container').forEach(container => {
+        const track = container.querySelector('.slider-track');
+        const nextBtn = container.querySelector('.next-btn');
+        const prevBtn = container.querySelector('.prev-btn');
+        const dots = container.querySelectorAll('.dot');
+        
+        if (!track) return;
+
+        // Función para actualizar puntitos basada en el scroll real
+        const updateDots = () => {
+            const scrollLeft = track.scrollLeft;
+            const width = track.offsetWidth;
+            const index = Math.round(scrollLeft / width);
+            
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.remove('w-2', 'opacity-60');
+                    dot.classList.add('w-6', 'opacity-100');
+                } else {
+                    dot.classList.remove('w-6', 'opacity-100');
+                    dot.classList.add('w-2', 'opacity-60');
+                }
+            });
+        };
+
+        // Escuchar el evento de scroll (es lo más preciso)
+        track.addEventListener('scroll', updateDots);
+
+        // Botones
+        nextBtn?.addEventListener('click', () => {
+            const width = track.offsetWidth;
+            // Si llegamos al final, volver al inicio
+            if (track.scrollLeft + width >= track.scrollWidth - 10) {
+                track.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                track.scrollBy({ left: width, behavior: 'smooth' });
+            }
+        });
+
+        prevBtn?.addEventListener('click', () => {
+            const width = track.offsetWidth;
+            track.scrollBy({ left: -width, behavior: 'smooth' });
+        });
+    });
+</script>
