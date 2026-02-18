@@ -17,7 +17,7 @@
                 
                 <div id="time-slots-container" class="opacity-50 pointer-events-none transition-opacity mt-6">
                     <label class="block text-sm font-bold text-gray-500 mb-4 uppercase">Horarios Disponibles</label>
-                    <div class="grid grid-cols-3 gap-3" id="slots-grid"></div>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="slots-grid"></div>
                     <p id="loading-msg" class="text-xs text-blue-500 mt-2 hidden animate-pulse">Consultando disponibilidad...</p>
                     
                     <div class="flex flex-wrap gap-4 mt-6 justify-center text-sm font-medium text-gray-600">
@@ -102,28 +102,81 @@
         this.value = this.value.replace(/\D/g, '');
     });
 
-    const baseHours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-
+    // 2. CONFIGURACIÓN DE FLATPICKR (CALENDARIO)
     flatpickr("#datepicker", {
         locale: "es",
         minDate: "today",
         dateFormat: "d F Y",
         disableMobile: "true",
+        // AQUÍ BLOQUEAMOS LOS MIÉRCOLES (Día 3)
+        "disable": [
+            function(date) {
+                return (date.getDay() === 3); // 0=Dom, 1=Lun, 2=Mar, 3=Mié
+            }
+        ],
         onChange: function(selectedDates, dateStr, instance) {
             if (selectedDates.length > 0) {
                 const offset = selectedDates[0].getTimezoneOffset();
                 const fechaLocal = new Date(selectedDates[0].getTime() - (offset * 60 * 1000));
                 const fechaSQL = fechaLocal.toISOString().split('T')[0];
+                
                 cargarHorarios(fechaSQL);
             }
         }
     });
+
+    // 3. FUNCIÓN PARA GENERAR HORARIOS SEGÚN EL DÍA
+    function obtenerHorariosPorDia(fechaString) {
+        const fecha = new Date(fechaString + "T12:00:00");
+        const diaSemana = fecha.getDay(); 
+
+        let horaCierre = "17:00"; // Default
+
+        // Lunes (1) y Jueves (4) -> Hasta 5:30 PM (17:30)
+        if (diaSemana === 1 || diaSemana === 4) { 
+            horaCierre = "17:30";
+        } 
+        // Martes (2) y Viernes (5) -> Hasta 5:00 PM (17:00)
+        // (Nota: Miércoles ya no se puede seleccionar)
+        else if (diaSemana === 2 || diaSemana === 5) {
+            horaCierre = "17:00";
+        } 
+        // Sábado (6) y Domingo (0) -> Hasta 6:30 PM (18:30)
+        else if (diaSemana === 6 || diaSemana === 0) {
+            horaCierre = "18:30";
+        }
+
+        const horarios = [];
+        let horaActual = 10; // Todos abren a las 10:00
+        let minutoActual = 0;
+
+        const [cierreH, cierreM] = horaCierre.split(':').map(Number);
+
+        while (true) {
+            const horaStr = `${horaActual.toString().padStart(2, '0')}:${minutoActual.toString().padStart(2, '0')}`;
+            horarios.push(horaStr);
+
+            if (horaActual > cierreH || (horaActual === cierreH && minutoActual >= cierreM)) {
+                break;
+            }
+
+            minutoActual += 30;
+            if (minutoActual === 60) {
+                minutoActual = 0;
+                horaActual++;
+            }
+        }
+        
+        return horarios;
+    }
 
     async function cargarHorarios(fechaSeleccionada) {
         timeContainer.classList.remove('opacity-50', 'pointer-events-none');
         slotsGrid.innerHTML = '';
         loadingMsg.classList.remove('hidden');
         formOverlay.classList.remove('hidden'); 
+
+        const horariosDelDia = obtenerHorariosPorDia(fechaSeleccionada);
 
         try {
             const respuesta = await fetch(`/obtener_horarios.php?fecha=${fechaSeleccionada}`);
@@ -134,35 +187,47 @@
             const ahora = new Date();
             const hoyString = ahora.toLocaleDateString('en-CA'); 
             const esHoy = fechaSeleccionada === hoyString;
-            const horaActual = ahora.getHours();
+            const horaActualNum = ahora.getHours();
+            const minutoActualNum = ahora.getMinutes();
 
-            baseHours.forEach(horaStr => {
+            horariosDelDia.forEach(horaStr => {
                 const btn = document.createElement('button');
                 btn.innerText = horaStr;
-                const horaNumerica = parseInt(horaStr.split(':')[0]);
+                
+                const [h, m] = horaStr.split(':').map(Number);
 
-                if (ocupados.includes(horaStr + ":00") || ocupados.includes(horaStr)) {
-                    btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-red-50 text-red-400 cursor-not-allowed border-red-100 line-through decoration-red-400';
-                    btn.disabled = true;
-                    btn.title = "Reservado";
-                
-                } else if (esHoy && horaNumerica <= horaActual) {
-                    btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200';
-                    btn.disabled = true;
-                    btn.title = "Horario pasado";
-                
-                } else {
-                    btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600 border-gray-200 transition shadow-sm';
+                let deshabilitado = false;
+                let claseExtra = 'bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600 border-gray-200';
+
+                // Si es hoy y ya pasó la hora
+                if (esHoy) {
+                    if (h < horaActualNum || (h === horaActualNum && m <= minutoActualNum)) {
+                        deshabilitado = true;
+                        claseExtra = 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200';
+                    }
+                }
+
+                // Si ya está reservado en base de datos
+                if (ocupados.includes(horaStr) || ocupados.includes(horaStr + ":00")) {
+                    deshabilitado = true;
+                    claseExtra = 'bg-red-50 text-red-400 cursor-not-allowed border-red-100 line-through decoration-red-400';
+                }
+
+                btn.className = `py-2 px-2 rounded border text-sm font-medium transition shadow-sm ${claseExtra}`;
+                btn.disabled = deshabilitado;
+
+                if (!deshabilitado) {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
                         document.querySelectorAll('#slots-grid button:not(:disabled)').forEach(b => {
-                            b.className = 'py-2 px-3 rounded border text-sm font-medium bg-white text-gray-700 border-gray-200 shadow-sm';
+                            b.className = 'py-2 px-2 rounded border text-sm font-medium bg-white text-gray-700 border-gray-200 shadow-sm';
                         });
-                        btn.className = 'py-2 px-3 rounded border text-sm font-medium bg-blue-600 text-white border-blue-600 shadow-md transform scale-105 transition';
+                        btn.className = 'py-2 px-2 rounded border text-sm font-medium bg-blue-600 text-white border-blue-600 shadow-md transform scale-105 transition';
                         hiddenTime.value = horaStr;
                         formOverlay.classList.add('hidden');
                     });
                 }
+                
                 slotsGrid.appendChild(btn);
             });
 
