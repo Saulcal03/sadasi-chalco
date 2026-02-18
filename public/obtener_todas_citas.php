@@ -12,7 +12,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // 2. SEGURIDAD SIMPLE
 // Solo mostraremos los datos si quien pregunta trae la contraseña correcta
-$clave_secreta_admin = "SoyElJefe2026"; // <--- PUEDES CAMBIAR ESTO
+$clave_secreta_admin = "Karen2026"; // <--- PUEDES CAMBIAR ESTO
 
 $clave_recibida = $_GET['clave'] ?? '';
 
