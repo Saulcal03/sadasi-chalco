@@ -76,7 +76,7 @@ if (isset($data->nombre) && isset($data->fecha)) {
 
                 // --- CORREO 1: AVISO PARA TI (ADMIN) ---
                 $mail->setFrom($smtp_user, 'Karén Martínez Citas'); 
-                $mail->addAddress('kmartinezb@sadasi.com.com'); 
+                $mail->addAddress('kmartinezb@sadasi.com'); 
                 
                 $mail->isHTML(true);
                 $mail->Subject = '🔔 Nueva Cita Agendada - Web';
