@@ -5,18 +5,48 @@
 
 <section id="agenda" class="py-20 bg-slate-50 relative overflow-hidden">
     <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-blue-900">Agenda tu Visita 📅</h2>
+        
+        <div class="text-center mb-10">
+            <h2 class="text-4xl font-bold text-blue-900 mb-6">Agenda tu Visita 📅</h2>
+            
+            <div class="inline-flex flex-col md:flex-row items-center justify-center bg-white rounded-xl shadow-sm border border-gray-200 p-6 gap-8 max-w-4xl mx-auto hover:shadow-md transition-shadow duration-300">
+                
+                <div class="text-center px-4">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Lun, Mar, Jue y Vie</span>
+                    </div>
+                    <p class="text-3xl font-light text-gray-800">10:00 <span class="text-gray-300 text-xl mx-1">|</span> 17:00</p>
+                    <p class="text-xs text-gray-400 font-medium mt-1">Última cita disponible: 5:00 PM</p>
+                </div>
+
+                <div class="hidden md:block w-px h-16 bg-gray-200"></div>
+                <div class="block md:hidden w-32 h-px bg-gray-200"></div>
+
+                <div class="text-center px-4">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Sábado y Domingo</span>
+                    </div>
+                    <p class="text-3xl font-light text-gray-800">10:00 <span class="text-gray-300 text-xl mx-1">|</span> 18:00</p>
+                    <p class="text-xs text-gray-400 font-medium mt-1">Última cita disponible: 6:00 PM</p>
+                </div>
+
+            </div>
+            
+
         </div>
 
         <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row border border-gray-100">
             
             <div class="lg:w-1/2 p-8 border-r border-gray-100">
-                <h3 class="text-xl font-bold text-gray-800 mb-6">1. Selecciona Fecha</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 text-sm">1</span> 
+                    Selecciona Fecha
+                </h3>
+                
                 <input type="text" id="datepicker" class="w-full bg-slate-50 border border-gray-300 rounded-lg p-4 text-center font-bold outline-none cursor-pointer text-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" placeholder="Clic para ver fechas">
                 
                 <div id="time-slots-container" class="opacity-50 pointer-events-none transition-opacity mt-6">
-                    <label class="block text-sm font-bold text-gray-500 mb-4 uppercase">Horarios Disponibles</label>
+                    <label class="block text-sm font-bold text-gray-500 mb-4 uppercase">Horarios Disponibles (1 Hora)</label>
                     <div class="grid grid-cols-3 sm:grid-cols-4 gap-2" id="slots-grid"></div>
                     <p id="loading-msg" class="text-xs text-blue-500 mt-2 hidden animate-pulse">Consultando disponibilidad...</p>
                     
@@ -50,7 +80,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Teléfono Móvil</label>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Teléfono Whatsapp</label>
                         <input type="tel" name="telefono" id="input-telefono" class="w-full p-3 rounded-lg border border-gray-300 focus:border-blue-500 outline-none transition" placeholder="Solo números (10 dígitos)" maxlength="10" inputmode="numeric" required>
                     </div>
 
@@ -108,10 +138,10 @@
         minDate: "today",
         dateFormat: "d F Y",
         disableMobile: "true",
-        // AQUÍ BLOQUEAMOS LOS MIÉRCOLES (Día 3)
+        // BLOQUEO DE MIÉRCOLES (Día 3)
         "disable": [
             function(date) {
-                return (date.getDay() === 3); // 0=Dom, 1=Lun, 2=Mar, 3=Mié
+                return (date.getDay() === 3); 
             }
         ],
         onChange: function(selectedDates, dateStr, instance) {
@@ -125,46 +155,30 @@
         }
     });
 
-    // 3. FUNCIÓN PARA GENERAR HORARIOS SEGÚN EL DÍA
+    // 3. FUNCIÓN PARA GENERAR HORARIOS (LÓGICA ACTUALIZADA)
     function obtenerHorariosPorDia(fechaString) {
         const fecha = new Date(fechaString + "T12:00:00");
         const diaSemana = fecha.getDay(); 
 
-        let horaCierre = "17:00"; // Default
+        let horaUltima = 17; // Por defecto 5 PM
 
-        // Lunes (1) y Jueves (4) -> Hasta 5:30 PM (17:30)
-        if (diaSemana === 1 || diaSemana === 4) { 
-            horaCierre = "17:30";
+        // Lunes(1), Martes(2), Jueves(4), Viernes(5) -> Última cita: 17:00
+        if (diaSemana === 1 || diaSemana === 2 || diaSemana === 4 || diaSemana === 5) { 
+            horaUltima = 17;
         } 
-        // Martes (2) y Viernes (5) -> Hasta 5:00 PM (17:00)
-        // (Nota: Miércoles ya no se puede seleccionar)
-        else if (diaSemana === 2 || diaSemana === 5) {
-            horaCierre = "17:00";
-        } 
-        // Sábado (6) y Domingo (0) -> Hasta 6:30 PM (18:30)
+        // Sábado (6) y Domingo (0) -> Última cita: 18:00
         else if (diaSemana === 6 || diaSemana === 0) {
-            horaCierre = "18:30";
+            horaUltima = 18;
         }
 
         const horarios = [];
-        let horaActual = 10; // Todos abren a las 10:00
-        let minutoActual = 0;
+        let horaActual = 10; // Inicio 10:00 AM
 
-        const [cierreH, cierreM] = horaCierre.split(':').map(Number);
-
-        while (true) {
-            const horaStr = `${horaActual.toString().padStart(2, '0')}:${minutoActual.toString().padStart(2, '0')}`;
+        // BUCLE: Usamos '<=' para asegurar que se incluya la hora de cierre
+        while (horaActual <= horaUltima) {
+            const horaStr = `${horaActual.toString().padStart(2, '0')}:00`;
             horarios.push(horaStr);
-
-            if (horaActual > cierreH || (horaActual === cierreH && minutoActual >= cierreM)) {
-                break;
-            }
-
-            minutoActual += 30;
-            if (minutoActual === 60) {
-                minutoActual = 0;
-                horaActual++;
-            }
+            horaActual++;
         }
         
         return horarios;
@@ -188,7 +202,6 @@
             const hoyString = ahora.toLocaleDateString('en-CA'); 
             const esHoy = fechaSeleccionada === hoyString;
             const horaActualNum = ahora.getHours();
-            const minutoActualNum = ahora.getMinutes();
 
             horariosDelDia.forEach(horaStr => {
                 const btn = document.createElement('button');
@@ -201,7 +214,7 @@
 
                 // Si es hoy y ya pasó la hora
                 if (esHoy) {
-                    if (h < horaActualNum || (h === horaActualNum && m <= minutoActualNum)) {
+                    if (h <= horaActualNum) {
                         deshabilitado = true;
                         claseExtra = 'bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200';
                     }
